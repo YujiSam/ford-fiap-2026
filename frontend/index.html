@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ford Inteligência Competitiva</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1>Inteligência Competitiva</h1>
+            <p>Busque especificações técnicas de veículos</p>
+        </div>
+
+        <!-- Login Section -->
+        <div class="card" id="loginSection">
+            <h2>🔐 Login</h2>
+            <div class="form-group">
+                <label>Usuário:</label>
+                <input type="text" id="usuario" value="analista" placeholder="analista">
+            </div>
+            <div class="form-group">
+                <label>Senha:</label>
+                <input type="password" id="senha" value="123456" placeholder="123456">
+            </div>
+            <button onclick="fazerLogin()" class="btn btn-primary">🔑 Entrar</button>
+            <div class="info-text">Usuário: analista | Senha: 123456</div>
+        </div>
+
+        <!-- Busca Section (só aparece após login) -->
+        <div class="card" id="buscaSection" style="display: none;">
+            <div class="user-info">
+                <span>👤 <span id="usuarioLogado"></span></span>
+                <button onclick="fazerLogout()" class="btn-logout">🚪 Sair</button>
+            </div>
+
+            <h2>🔍 Buscar Veículo</h2>
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Marca:</label>
+                    <input type="text" id="marca" placeholder="Ex: Ford" value="Ford">
+                </div>
+                <div class="form-group">
+                    <label>Modelo:</label>
+                    <input type="text" id="modelo" placeholder="Ex: Ranger" value="Ranger">
+                </div>
+                <div class="form-group">
+                    <label>Versão:</label>
+                    <input type="text" id="versao" placeholder="Ex: Raptor" value="Raptor">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>Atributos específicos (opcional - separados por vírgula):</label>
+                <input type="text" id="atributos" placeholder="Ex: potencia, preco, motor">
+            </div>
+
+            <div class="button-group">
+                <button onclick="buscarVeiculo()" class="btn btn-success">🔍 Buscar</button>
+                <button onclick="limparResultado()" class="btn btn-secondary">🗑️ Limpar</button>
+            </div>
+
+            <!-- Resultado da busca -->
+            <div id="resultado" class="resultado"></div>
+        </div>
+
+        <!-- Footer -->
+        <div class="footer">
+            <p>Ford FIAP 2026 | Cybersecurity & Inteligência Competitiva</p>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
