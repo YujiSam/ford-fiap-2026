@@ -108,3 +108,25 @@ curl -X POST "http://localhost:8000/buscar" \
   -H "Authorization: Bearer SEU_TOKEN" \
   -d '{"marca":"Ford","modelo":"Ranger","versao":"Raptor"}'
 ```
+## 📸 Evidências de Funcionamento
+
+### API rodando no terminal
+![API rodando](prints/print_api.png)
+
+### Frontend rodando no terminal
+![Frontend rodando](prints/print_frontend.png)
+
+### Tela de login
+![Tela de login](prints/print_login.png)
+
+### Login realizado e busca da Ranger Raptor
+![Login e resultado](prints/print_logado.png)
+
+### Logs anonimizados no terminal
+![Logs anonimizados](prints/print_logs.png)
+
+### Swagger - Login do admin
+![Swagger admin](prints/print_swagger_admin.png)
+
+### Teste de criptografia
+![Teste criptografia](prints/print_criptografia.png)
