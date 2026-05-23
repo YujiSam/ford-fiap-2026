@@ -40,7 +40,7 @@ A solução permite buscar especificações técnicas de veículos de forma padr
 ### 1. Clone o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/ford-challenge.git
+git clone https://github.com/YujiSam/ford-fiap-2026.git
 cd ford-challenge
 ```
 
@@ -130,3 +130,11 @@ curl -X POST "http://localhost:8000/buscar" \
 
 ### Teste de criptografia
 ![Teste criptografia](prints/print_criptografia.png)
+
+# Integrantes 👤​
+Gustavo Yuji Osugi RM555034
+Gustavo Viega RM555885
+Kaio Drago Lima Souza RM556095
+Vitor Rivas Cardoso RM556404
+Otavio Santos de Lima Ferrão RM5556452
+
