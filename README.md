@@ -132,9 +132,13 @@ curl -X POST "http://localhost:8000/buscar" \
 ![Teste criptografia](prints/print_criptografia.png)
 
 # Integrantes 👤​
-Gustavo Yuji Osugi RM555034
-Gustavo Viega RM555885
-Kaio Drago Lima Souza RM556095
-Vitor Rivas Cardoso RM556404
-Otavio Santos de Lima Ferrão RM5556452
+### Gustavo Yuji Osugi RM555034
+
+### Gustavo Viega RM555885
+
+### Kaio Drago Lima Souza RM556095
+
+### Vitor Rivas Cardoso RM556404
+
+### Otavio Santos de Lima Ferrão RM5556452
 
