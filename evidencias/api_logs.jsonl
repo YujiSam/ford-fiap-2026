@@ -1,0 +1,36 @@
+{"ts": "2026-09-24T09:38:43.742+00:00", "level": "INFO", "service": "ford-ic-api", "event": "APP_STARTED", "request_id": "-", "env": "dev", "cors_origins": 2, "access_token_min": 15}
+INFO:     Started server process [7173]
+INFO:     Waiting for application startup.
+INFO:     Application startup complete.
+INFO:     Uvicorn running on http://127.0.0.1:8765 (Press CTRL+C to quit)
+{"ts": "2026-09-24T09:38:47.257+00:00", "level": "INFO", "service": "ford-ic-api", "event": "LOGIN_SUCCESS", "request_id": "12370f1406eb42f9", "user": "a****@ford.com", "role": "analista", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 200 OK
+{"ts": "2026-09-24T09:38:47.266+00:00", "level": "INFO", "service": "ford-ic-api", "event": "SEARCH", "request_id": "b50326080c3741ae", "user": "a****@ford.com", "ip": "127.0.0.1", "veiculo": "Ford Ranger Raptor", "encontrado": true, "n_atributos": 0}
+INFO:     127.0.0.1:53004 - "POST /buscar HTTP/1.1" 200 OK
+{"ts": "2026-09-24T09:38:47.271+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "ACCESS_DENIED", "request_id": "8dcb1ad7dccd487e", "ip": "127.0.0.1", "path": "/admin/historico", "user": "a****@ford.com", "role": "analista", "role_necessaria": "admin"}
+INFO:     127.0.0.1:53004 - "GET /admin/historico HTTP/1.1" 403 Forbidden
+{"ts": "2026-09-24T09:38:47.274+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "VALIDATION_ERROR", "request_id": "feaf940335d14a78", "ip": "127.0.0.1", "path": "/buscar", "campos": ["body.marca"]}
+INFO:     127.0.0.1:53004 - "POST /buscar HTTP/1.1" 422 Unprocessable Entity
+{"ts": "2026-09-24T09:38:47.277+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "VALIDATION_ERROR", "request_id": "3d17d7d086004883", "ip": "127.0.0.1", "path": "/buscar", "campos": ["body.marca"]}
+INFO:     127.0.0.1:53004 - "POST /buscar HTTP/1.1" 422 Unprocessable Entity
+{"ts": "2026-09-24T09:38:47.279+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "TOKEN_INVALID", "request_id": "830483a8311341b0", "ip": "127.0.0.1", "path": "/veiculos"}
+INFO:     127.0.0.1:53004 - "GET /veiculos HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:47.425+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_FAILURE", "request_id": "8f321dede05040a0", "user_hash": "7780bfe0a836", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:47.577+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_FAILURE", "request_id": "c621e91fe7d948db", "user_hash": "7780bfe0a836", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:47.737+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_FAILURE", "request_id": "a8f435ee5de64c7f", "user_hash": "7780bfe0a836", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:47.880+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_FAILURE", "request_id": "c6c17c62b6f44f69", "user_hash": "7780bfe0a836", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:48.016+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_FAILURE", "request_id": "ff5415fafba1415d", "user_hash": "7780bfe0a836", "ip": "127.0.0.1"}
+{"ts": "2026-09-24T09:38:48.016+00:00", "level": "ERROR", "service": "ford-ic-api", "event": "ACCOUNT_LOCKED", "request_id": "ff5415fafba1415d", "user_hash": "7780bfe0a836", "ip": "127.0.0.1", "falhas": 5, "janela_s": 300}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 401 Unauthorized
+{"ts": "2026-09-24T09:38:48.019+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "LOGIN_BLOCKED", "request_id": "1af43811c13142a3", "user_hash": "7780bfe0a836", "ip": "127.0.0.1", "retry_after": 299}
+INFO:     127.0.0.1:53004 - "POST /login HTTP/1.1" 429 Too Many Requests
+{"ts": "2026-09-24T09:38:48.022+00:00", "level": "INFO", "service": "ford-ic-api", "event": "LOGOUT", "request_id": "88fe642462f34fd9", "user": "a****@ford.com", "ip": "127.0.0.1"}
+INFO:     127.0.0.1:53004 - "POST /logout HTTP/1.1" 200 OK
+{"ts": "2026-09-24T09:38:48.025+00:00", "level": "WARNING", "service": "ford-ic-api", "event": "TOKEN_REVOKED", "request_id": "a9e8774849714fc4", "ip": "127.0.0.1", "path": "/veiculos"}
+INFO:     127.0.0.1:53004 - "GET /veiculos HTTP/1.1" 401 Unauthorized
+INFO:     127.0.0.1:53018 - "GET /metrics HTTP/1.1" 200 OK
+INFO:     Shutting down

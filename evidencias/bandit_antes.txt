@@ -1,0 +1,51 @@
+=== BANDIT (SAST) - main.py ORIGINAL ===
+
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'minha-chave-secreta-forte-2026'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: ./repo_original/main.py:25:13
+24	# ==================== CONFIGURAÇÕES ====================
+25	SECRET_KEY = "minha-chave-secreta-forte-2026"
+26	ALGORITHM = "HS256"
+
+--------------------------------------------------
+>> Issue: [B105:hardcoded_password_string] Possible hardcoded password: 'bearer'
+   Severity: Low   Confidence: Medium
+   CWE: CWE-259 (https://cwe.mitre.org/data/definitions/259.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b105_hardcoded_password_string.html
+   Location: ./repo_original/main.py:131:35
+130	    logger.info(f"Login OK: {anonimizar_email(usuario['email'])} - Role: {usuario['role']}")
+131	    return {"access_token": token, "token_type": "bearer", "role": usuario["role"]}
+132	
+
+--------------------------------------------------
+>> Issue: [B112:try_except_continue] Try, Except, Continue detected.
+   Severity: Low   Confidence: High
+   CWE: CWE-703 (https://cwe.mitre.org/data/definitions/703.html)
+   More Info: https://bandit.readthedocs.io/en/1.9.4/plugins/b112_try_except_continue.html
+   Location: ./repo_original/main.py:173:8
+172	            })
+173	        except:
+174	            continue
+175	    return {"total_buscas": len(historico_clear), "historico": historico_clear}
+
+--------------------------------------------------
+
+Code scanned:
+	Total lines of code: 145
+	Total lines skipped (#nosec): 0
+	Total potential issues skipped due to specifically being disabled (e.g., #nosec BXXX): 0
+
+Run metrics:
+	Total issues (by severity):
+		Undefined: 0
+		Low: 3
+		Medium: 0
+		High: 0
+	Total issues (by confidence):
+		Undefined: 0
+		Low: 0
+		Medium: 2
+		High: 1
+Files skipped (0):

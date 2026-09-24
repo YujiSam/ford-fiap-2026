@@ -1,0 +1,2 @@
+=== PIP-AUDIT (SCA) - requirements.txt NOVO ===
+No known vulnerabilities found

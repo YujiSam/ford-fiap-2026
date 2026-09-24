@@ -1,0 +1,11 @@
+ford_security_events_total{event="APP_STARTED"} 1.0
+ford_security_events_total{event="LOGIN_SUCCESS"} 1.0
+ford_security_events_total{event="SEARCH"} 1.0
+ford_security_events_total{event="ACCESS_DENIED"} 1.0
+ford_security_events_total{event="VALIDATION_ERROR"} 2.0
+ford_security_events_total{event="TOKEN_INVALID"} 1.0
+ford_security_events_total{event="LOGIN_FAILURE"} 5.0
+ford_security_events_total{event="ACCOUNT_LOCKED"} 1.0
+ford_security_events_total{event="LOGIN_BLOCKED"} 1.0
+ford_security_events_total{event="LOGOUT"} 1.0
+ford_security_events_total{event="TOKEN_REVOKED"} 1.0
