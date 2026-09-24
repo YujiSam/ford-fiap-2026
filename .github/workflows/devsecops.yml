@@ -1,0 +1,80 @@
+name: DevSecOps Pipeline
+on:
+  push: { branches: [main] }
+  pull_request: { branches: [main] }
+  schedule: [{ cron: "0 9 * * 1" }]   # varredura semanal (novas CVEs surgem sem novo commit)
+
+permissions:
+  contents: read                      # princípio do menor privilégio
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  secret-scan:                        # 1) Segredos vazados no histórico do Git
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with: { fetch-depth: 0 }
+      - uses: gitleaks/gitleaks-action@v2
+        env: { GITHUB_TOKEN: "${{ secrets.GITHUB_TOKEN }}" }
+
+  sast:                               # 2) Análise estática do código
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install bandit==1.9.4
+      - run: bandit -r main.py -ll     # falha em severidade média ou alta
+
+  sca:                                # 3) Dependências com CVE conhecida
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install pip-audit==2.10.0
+      - run: pip-audit -r requirements.txt --strict
+
+  test:                               # 4) Testes de segurança automatizados
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with: { python-version: "3.13" }
+      - run: pip install -r requirements-dev.txt
+      - run: python -m pytest tests -v --cov=main --cov-fail-under=80
+
+  container-scan:                     # 5) Imagem Docker + Dockerfile (IaC)
+    runs-on: ubuntu-latest
+    needs: [secret-scan, sast, sca, test]
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker build -t ford-ic-api:${{ github.sha }} .
+      # Trivy: PINE por SHA completo (ver seção de supply chain do documento)
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          image-ref: ford-ic-api:${{ github.sha }}
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+          ignore-unfixed: true
+      - uses: aquasecurity/trivy-action@v0.36.0
+        with:
+          scan-type: config
+          scan-ref: .
+          severity: HIGH,CRITICAL
+          exit-code: "1"
+
+  deploy:                             # 6) Só chega aqui se TODOS os gates passaram
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    runs-on: ubuntu-latest
+    needs: [container-scan]
+    permissions: { contents: read, packages: write }
+    steps:
+      - uses: actions/checkout@v4
+      - uses: docker/login-action@v3
+        with: { registry: ghcr.io, username: "${{ github.actor }}", password: "${{ secrets.GITHUB_TOKEN }}" }
+      - uses: docker/build-push-action@v6
+        with: { context: ., push: true, tags: "ghcr.io/${{ github.repository }}:${{ github.sha }}" }
