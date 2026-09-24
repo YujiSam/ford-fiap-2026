@@ -3,76 +3,58 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- CSP: só scripts/estilos do próprio site; requisições apenas para a API -->
+    <meta http-equiv="Content-Security-Policy"
+          content="default-src 'self'; script-src 'self'; style-src 'self'; connect-src 'self' http://localhost:8000; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'">
+    <meta name="referrer" content="no-referrer">
     <title>Ford Inteligência Competitiva</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <!-- Header -->
         <div class="header">
             <h1>Inteligência Competitiva</h1>
             <p>Busque especificações técnicas de veículos</p>
         </div>
 
-        <!-- Login Section -->
         <div class="card" id="loginSection">
             <h2>🔐 Login</h2>
             <div class="form-group">
-                <label>Usuário:</label>
-                <input type="text" id="usuario" value="analista" placeholder="analista">
+                <label for="usuario">Usuário:</label>
+                <input type="text" id="usuario" maxlength="50" autocomplete="username">
             </div>
             <div class="form-group">
-                <label>Senha:</label>
-                <input type="password" id="senha" value="123456" placeholder="123456">
+                <label for="senha">Senha:</label>
+                <input type="password" id="senha" maxlength="128" autocomplete="current-password">
             </div>
-            <button onclick="fazerLogin()" class="btn btn-primary">🔑 Entrar</button>
-            <div class="info-text">Usuário: analista | Senha: 123456</div>
+            <button id="btnLogin" class="btn btn-primary">🔑 Entrar</button>
+            <div id="loginErro" class="erro" hidden></div>
         </div>
 
-        <!-- Busca Section (só aparece após login) -->
-        <div class="card" id="buscaSection" style="display: none;">
+        <div class="card" id="buscaSection" hidden>
             <div class="user-info">
                 <span>👤 <span id="usuarioLogado"></span></span>
-                <button onclick="fazerLogout()" class="btn-logout">🚪 Sair</button>
+                <button id="btnLogout" class="btn-logout">🚪 Sair</button>
             </div>
-
             <h2>🔍 Buscar Veículo</h2>
-            
             <div class="form-row">
-                <div class="form-group">
-                    <label>Marca:</label>
-                    <input type="text" id="marca" placeholder="Ex: Ford" value="Ford">
-                </div>
-                <div class="form-group">
-                    <label>Modelo:</label>
-                    <input type="text" id="modelo" placeholder="Ex: Ranger" value="Ranger">
-                </div>
-                <div class="form-group">
-                    <label>Versão:</label>
-                    <input type="text" id="versao" placeholder="Ex: Raptor" value="Raptor">
-                </div>
+                <div class="form-group"><label for="marca">Marca:</label><input type="text" id="marca" maxlength="50" value="Ford"></div>
+                <div class="form-group"><label for="modelo">Modelo:</label><input type="text" id="modelo" maxlength="50" value="Ranger"></div>
+                <div class="form-group"><label for="versao">Versão:</label><input type="text" id="versao" maxlength="50" value="Raptor"></div>
             </div>
-
             <div class="form-group">
-                <label>Atributos específicos (opcional - separados por vírgula):</label>
+                <label for="atributos">Atributos específicos (opcional - separados por vírgula):</label>
                 <input type="text" id="atributos" placeholder="Ex: potencia, preco, motor">
             </div>
-
             <div class="button-group">
-                <button onclick="buscarVeiculo()" class="btn btn-success">🔍 Buscar</button>
-                <button onclick="limparResultado()" class="btn btn-secondary">🗑️ Limpar</button>
+                <button id="btnBuscar" class="btn btn-success">🔍 Buscar</button>
+                <button id="btnLimpar" class="btn btn-secondary">🗑️ Limpar</button>
             </div>
-
-            <!-- Resultado da busca -->
             <div id="resultado" class="resultado"></div>
         </div>
 
-        <!-- Footer -->
-        <div class="footer">
-            <p>Ford FIAP 2026 | Cybersecurity & Inteligência Competitiva</p>
-        </div>
+        <div class="footer"><p>Ford FIAP 2026 | Cybersecurity & Inteligência Competitiva</p></div>
     </div>
-
     <script src="script.js"></script>
 </body>
 </html>
