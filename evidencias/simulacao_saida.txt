@@ -1,0 +1,19 @@
+1) Uso legítimo
+   busca: 200
+2) Analista tentando acessar rota de admin (escalada de privilégio)
+   admin/historico: 403
+3) Injeção / XSS na busca
+   payload: 422
+   payload: 422
+4) Token forjado
+   token inválido: 401
+5) Força bruta contra a conta admin
+   tentativa 1: 401
+   tentativa 2: 401
+   tentativa 3: 401
+   tentativa 4: 401
+   tentativa 5: 401
+   tentativa 6: 429
+6) Logout (revogação do token)
+   logout: 200
+   reuso do token: 401

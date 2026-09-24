@@ -1,113 +1,80 @@
 # 🚗 Ford Inteligência Competitiva
 
-## 📋 Sobre o Projeto
+API da Ford FIAP 2026 (Desafio 01 - Inteligência Competitiva Automotiva) com foco em **Cybersecurity / DevSecOps**.
 
-API desenvolvida para o desafio da Ford FIAP 2026, com foco em **Inteligência Competitiva Automotiva** e **Cybersecurity**.
+## 🛡️ Controles de segurança (Sprint 3)
 
-A solução permite buscar especificações técnicas de veículos de forma padronizada, com autenticação JWT, criptografia de dados sensíveis e logs anonimizados.
-
----
-
-## 🎯 Funcionalidades
-
-| Funcionalidade | Descrição |
-|----------------|-----------|
-| 🔐 Autenticação JWT | Login com token válido por 2 horas |
-| 🔍 Busca de veículos | Retorna especificações padronizadas |
-| 🛡️ Sanitização de entrada | Proteção contra SQL Injection e XSS |
-| 📝 Logs anonimizados | Emails são ocultados nos logs |
-| 🔒 Criptografia | Dados sensíveis são criptografados |
-| 📊 Histórico | Buscas registradas (acesso apenas admin) |
-| 🎨 Frontend Web | Interface amigável para testes |
-
----
-
-## 🛠️ Tecnologias Utilizadas
-
-| Tecnologia | Versão | Para que serve |
-|------------|--------|----------------|
-| Python | 3.13+ | Linguagem principal |
-| FastAPI | 0.136.1 | Framework web |
-| PyJWT | 2.10.1 | Autenticação JWT |
-| Cryptography | 45.0.7 | Criptografia de dados |
-| Pydantic | 2.13.3 | Validação de dados |
-| Uvicorn | 0.46.0 | Servidor ASGI |
-
----
+| Área | Controle |
+|---|---|
+| Segredos | Somente por variáveis de ambiente; a API **não sobe** se faltar/for fraco |
+| Senhas | Hash Argon2id, comparação em tempo constante, sem enumeração de usuários |
+| JWT | HS256 fixo, `iss/aud/exp/iat/nbf/jti` obrigatórios, expira em 15 min, revogação via `/logout` |
+| Acesso | RBAC no servidor (`analista` / `admin`) |
+| Entrada | Validação por allow-list, campos extras rejeitados, sem eco do payload |
+| Abuso | Rate limit por IP + bloqueio de conta após 5 falhas |
+| Dados | Histórico criptografado (Fernet) com rotação de chaves (MultiFernet) |
+| Observabilidade | Logs JSON com `request_id`, e-mails anonimizados, métricas Prometheus em `/metrics` |
+| HTTP | Cabeçalhos de segurança, CORS restrito, erros genéricos, Swagger desligado em produção |
+| Frontend | Sem credenciais na tela, sem `innerHTML` (anti-XSS), CSP |
+| Pipeline | GitHub Actions: Gitleaks, Bandit, pip-audit, pytest, Trivy, deploy condicionado |
 
 ## 📦 Instalação
 
-### 1. Clone o repositório
-
 ```bash
 git clone https://github.com/YujiSam/ford-fiap-2026.git
-cd ford-challenge
-```
-
-### 2. Crie e ative o ambiente virtual
-
-# Windows 
-
-```bash
+cd ford-fiap-2026
 python -m venv venv
-source venv/Scripts/activate
-```
-
-# Linux/Mac
-
-```bash
-python3 -m venv venv
-source venv/bin/activate
-```
-
-### 3. Instale as dependências
-
-```bash
+source venv/Scripts/activate      # Windows (Git Bash) | Linux/Mac: source venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## 🚀 Como Executar
-
-# Terminal 1 – API (Backend)
+## 🔑 Configuração (obrigatória)
 
 ```bash
+cp .env.example .env
+```
+
+Abra o `.env` e substitua **todos** os `TROQUE_ME`:
+
+```bash
+python -c "import secrets; print(secrets.token_urlsafe(48))"                       # JWT_SECRET
+python -c "from cryptography.fernet import Fernet; print(Fernet.generate_key().decode())"   # FERNET_KEYS
+```
+
+`ANALISTA_PASSWORD` e `ADMIN_PASSWORD` (mín. 12 caracteres) e `METRICS_TOKEN` (mín. 24) você mesmo define. **Nunca faça commit do `.env`.**
+
+## 🚀 Como executar
+
+```bash
+# Terminal 1 - API
 uvicorn main:app --reload
+
+# Terminal 2 - Frontend
+cd frontend && python -m http.server 3000
 ```
 
-A API estará disponível em: http://localhost:8000
+API: http://localhost:8000 (Swagger em `/docs`) | Frontend: http://localhost:3000
 
-# Terminal 2 – Frontend
+## 🧪 Testes e varreduras de segurança
 
 ```bash
-cd frontend
-python -m http.server 3000
+pip install -r requirements-dev.txt
+python -m pytest tests -v --cov=main      # 37 testes de segurança
+bandit -r main.py                         # SAST
+pip-audit -r requirements.txt             # SCA
+python scripts/simular_ataques.py http://localhost:8000 SENHA_ANALISTA SENHA_ADMIN   # gera logs/alertas
 ```
 
-O frontend estará disponível em: http://localhost:3000
-
-## 👥 Credenciais para Teste
-
-| Usuário | Senha | Role | Permissões |
-|---------|-------|------|-------------|
-| `analista` | `123456` | analista | Buscar veículos, ver lista |
-| `admin` | `admin123` | admin | Tudo do analista + histórico + testes criptografia |
-
-## 📡 Exemplos de Requisições
-
-### Login
+## 📡 Exemplos
 
 ```bash
-curl -X POST "http://localhost:8000/login" \
-  -H "Content-Type: application/json" \
-  -d '{"usuario":"analista","senha":"123456"}'
+curl -X POST http://localhost:8000/login -H "Content-Type: application/json" \
+  -d '{"usuario":"analista","senha":"SUA_SENHA"}'
+
+curl -X POST http://localhost:8000/buscar -H "Content-Type: application/json" \
+  -H "Authorization: Bearer SEU_TOKEN" -d '{"marca":"Ford","modelo":"Ranger","versao":"Raptor"}'
 ```
 
-```bash
-curl -X POST "http://localhost:8000/buscar" \
-  -H "Content-Type: application/json" \
-  -H "Authorization: Bearer SEU_TOKEN" \
-  -d '{"marca":"Ford","modelo":"Ranger","versao":"Raptor"}'
-```
 ## 📸 Evidências de Funcionamento
 
 ### API rodando no terminal
