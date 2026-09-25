@@ -1,0 +1,38 @@
+# Sprint 3 - Observabilidade (Prometheus + Grafana)
+#
+# Uso:
+#   1. cd monitoring
+#   2. cp .env.monitoring.example .env
+#   3. Edite o .env e coloque o MESMO valor de METRICS_TOKEN usado na API
+#   4. Rode a API normalmente (fora do compose, na porta 8000)
+#   5. docker compose up -d
+#   6. Prometheus: http://localhost:9090  |  Grafana: http://localhost:3001 (admin / admin, troque no 1º login)
+services:
+  prometheus:
+    image: prom/prometheus:v3.0.1
+    container_name: ford-prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml:ro
+      - ./metrics_token.txt:/etc/prometheus/metrics_token.txt:ro
+    command:
+      - "--config.file=/etc/prometheus/prometheus.yml"
+      - "--storage.tsdb.retention.time=7d"
+    ports:
+      - "9090:9090"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"   # permite acessar a API rodando no host
+
+  grafana:
+    image: grafana/grafana-oss:11.4.0
+    container_name: ford-grafana
+    depends_on:
+      - prometheus
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_AUTH_ANONYMOUS_ENABLED=false
+    volumes:
+      - ./grafana/provisioning:/etc/grafana/provisioning:ro
+      - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+    ports:
+      - "3001:3000"   # 3001 pra não brigar com o frontend da API (3000)

@@ -11,3 +11,6 @@ __pycache__/
 htmlcov/
 monitoring/.env
 monitoring/metrics_token.txt
+
+monitoring/.env
+monitoring/metrics_token.txt

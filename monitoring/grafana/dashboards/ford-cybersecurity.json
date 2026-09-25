@@ -1,0 +1,101 @@
+{
+  "title": "Ford Inteligência Competitiva - Cybersecurity",
+  "uid": "ford-cyber-sprint3",
+  "timezone": "browser",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "10s",
+  "time": { "from": "now-1h", "to": "now" },
+  "panels": [
+    {
+      "id": 1,
+      "title": "Requisições por status HTTP (taxa/min)",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum by (status) (rate(ford_http_requests_total[1m])) * 60",
+          "legendFormat": "{{status}}"
+        }
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Eventos de segurança (total acumulado)",
+      "type": "bargauge",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 0 },
+      "targets": [
+        {
+          "expr": "sum by (event) (ford_security_events_total)",
+          "legendFormat": "{{event}}"
+        }
+      ]
+    },
+    {
+      "id": 3,
+      "title": "Falhas de login (taxa/min) - possível força bruta",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 8 },
+      "fieldConfig": { "defaults": { "custom": { "thresholdsStyle": { "mode": "area" } } } },
+      "targets": [
+        {
+          "expr": "rate(ford_security_events_total{event=\"LOGIN_FAILURE\"}[1m]) * 60",
+          "legendFormat": "LOGIN_FAILURE / min"
+        },
+        {
+          "expr": "rate(ford_security_events_total{event=\"ACCOUNT_LOCKED\"}[5m]) * 60",
+          "legendFormat": "ACCOUNT_LOCKED / min"
+        }
+      ]
+    },
+    {
+      "id": 4,
+      "title": "Acessos negados e tokens inválidos/revogados",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 12, "y": 8 },
+      "targets": [
+        {
+          "expr": "sum(rate(ford_security_events_total{event=~\"ACCESS_DENIED|TOKEN_INVALID|TOKEN_EXPIRED|TOKEN_REVOKED|TOKEN_MISSING\"}[5m])) * 60",
+          "legendFormat": "eventos/min"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "title": "Latência das requisições (p95) por rota",
+      "type": "timeseries",
+      "gridPos": { "h": 8, "w": 12, "x": 0, "y": 16 },
+      "targets": [
+        {
+          "expr": "histogram_quantile(0.95, sum by (route, le) (rate(ford_http_request_duration_seconds_bucket[5m])))",
+          "legendFormat": "{{route}}"
+        }
+      ]
+    },
+    {
+      "id": 6,
+      "title": "Requisições bloqueadas por rate limit (429)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 6, "x": 12, "y": 16 },
+      "targets": [
+        {
+          "expr": "sum(ford_security_events_total{event=\"RATE_LIMIT_EXCEEDED\"})"
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "title": "Erros internos não tratados (500)",
+      "type": "stat",
+      "gridPos": { "h": 8, "w": 6, "x": 18, "y": 16 },
+      "fieldConfig": { "defaults": { "thresholds": { "steps": [
+        { "color": "green", "value": null }, { "color": "red", "value": 1 }
+      ] } } },
+      "targets": [
+        {
+          "expr": "sum(ford_security_events_total{event=\"UNHANDLED_ERROR\"})"
+        }
+      ]
+    }
+  ]
+}

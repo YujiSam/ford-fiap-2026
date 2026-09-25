@@ -1,0 +1,8 @@
+apiVersion: 1
+providers:
+  - name: "Ford Cybersecurity"
+    orgId: 1
+    folder: ""
+    type: file
+    options:
+      path: /var/lib/grafana/dashboards
