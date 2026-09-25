@@ -9,3 +9,5 @@ __pycache__/
 .pytest_cache/
 .coverage
 htmlcov/
+monitoring/.env
+monitoring/metrics_token.txt
