@@ -3,7 +3,7 @@ uvicorn==0.46.0
 pyjwt==2.14.0
 pydantic==2.13.5
 cryptography==50.0.1
-slowapi==0.1.9
+slowapi==0.1.10
 argon2-cffi==25.1.0
 prometheus-client==0.26.0
 python-dotenv==1.2.3
