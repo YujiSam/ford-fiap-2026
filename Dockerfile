@@ -2,7 +2,10 @@ FROM python:3.13-slim
 ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 PIP_NO_CACHE_DIR=1
 WORKDIR /app
 COPY requirements.txt .
-RUN pip install --upgrade pip setuptools && pip install -r requirements.txt
+RUN pip install --upgrade pip setuptools \
+ && pip install -r requirements.txt \
+ && pip uninstall -y pip setuptools wheel \
+ && rm -rf /root/.cache
 COPY main.py .
 # Usuário sem privilégios (não roda como root)
 RUN useradd --system --uid 10001 --no-create-home app
