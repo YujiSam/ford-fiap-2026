@@ -37,10 +37,10 @@ API que consulta especificações técnicas padronizadas de veículos a partir d
 ## Visão geral
 
 ```
-┌──────────────┐      HTTPS/JSON       ┌──────────────────┐
-│   Frontend   │  ───────────────────► │    API FastAPI    │
-│ (HTML/JS/CSS)│  ◄─────────────────── │  (autenticação,    │
-└──────────────┘      Bearer JWT       │   RBAC, busca)     │
+┌──────────────┐      HTTPS/JSON        ┌────────────────────┐
+│   Frontend   │  ───────────────────►  │   API FastAPI      │
+│ (HTML/JS/CSS)│  ◄───────────────────  │  (autenticação,    │
+└──────────────┘      Bearer JWT        │  RBAC, busca)      │
                                         └─────────┬──────────┘
                                                   │ métricas /metrics
                                                   ▼
